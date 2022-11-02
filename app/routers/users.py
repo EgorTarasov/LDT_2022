@@ -18,19 +18,6 @@ router = APIRouter(
 )
 
 
-# async def get_current_user(token: str = Depends(oauth2_scheme)) -> models.User:
-#     db = next(get_db())
-#     print(token)
-#     user = crud.get_user_by_token(db, token)
-#     # if not user:
-#     #     raise HTTPException(
-#     #         status_code=status.HTTP_401_UNAUTHORIZED,
-#     #         detail="Invalid authentication credentials",
-#     #         headers={"WWW-Authenticate": "Bearer"},
-#     #     )
-#     return user
-
-
 @router.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     db = next(get_db())

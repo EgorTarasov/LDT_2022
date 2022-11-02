@@ -53,4 +53,4 @@ def get_token(db: Session, username: str) -> models.Token:
 
 # MapItems
 def get_map_items(db: Session, offset: int = 0, limit: int = 100):
-    return db.query(models.MapItem).offset(offset).limit(limit).all()
+    return db.query(models.MapItem).offset(offset).limit(limit).all()[offset:(offset+limit)]

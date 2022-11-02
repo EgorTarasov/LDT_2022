@@ -30,7 +30,6 @@ class Token(Base):
     owner = relationship("User", back_populates="token")
 
 
-
 class MapItem(Base):
     """
     types:
