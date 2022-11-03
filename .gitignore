@@ -22,6 +22,7 @@ archive.zip
 DS_STORE
 *.sqlite
 .env
+arm_venv
 # vim temporary files
 *~
 .*.sw?
