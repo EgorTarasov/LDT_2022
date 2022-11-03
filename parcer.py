@@ -57,54 +57,69 @@ time.sleep(2)
 
 data: dict[str: list[str]] = {}
 arr = []
-with open('parcer/postv3.csv', 'w+', encoding="utf-8") as csvfile:
-    fieldnames = ['name1', 'name2', "lat", "long", "type", "address", "rating", "rating_count", "time_open"]
-    dwriter = csv.DictWriter(csvfile, fieldnames=fieldnames)
-    writer = csv.writer(csvfile)
-    while len(arr) < 50:
-        results = driver.find_elements(By.CLASS_NAME, "search-snippet-view")
+# with open('parcer/postv3.csv', 'w+', encoding="utf-8") as csvfile:
+#     fieldnames = ['name1', 'name2', "lat", "long", "type", "address", "rating", "rating_count", "time_open"]
+#     dwriter = csv.DictWriter(csvfile, fieldnames=fieldnames)
+#     writer = csv.writer(csvfile)
+while len(arr) < 50:
+    results = driver.find_elements(By.CLASS_NAME, "search-snippet-view")
 
-        for el in results:
-            if len(el.text.split("\n")) == 9:
+    for el in results:
+        if len(el.text.split("\n")) == 9:
 
-                name1, name2, _type, address, _, rating, rating_count, _, time_till_open = el.text.split("\n")
-                coord = el.find_element(By.CLASS_NAME, "search-snippet-view__body")
-                long, lat = map(lambda x: float(x), coord.get_attribute("data-coordinates").split(","))
-                #/html/body/div[1]/div[2]/div[8]/div[2]/div[1]/div[1]/div[1]/div/div[1]/div/div/ul/li[1]/div
-                # print(type(name1), type(address))
-                # print(name1, address)
-                #
-                print(lat,long)
-                rating = float(rating.replace(",", "."))
-                item =  MapItem(
-                        name=name1,
-                        type=name2,
-                        address=address,
-                        lat=lat,
-                        long=long
-                    )
-                arr.append(
-                    MapItem(
-                        name=name1,
-                        type=name2,
-                        address=address,
-                        lat=lat,
-                        long=long
-                    )
+            name1, name2, _type, address, _, rating, rating_count, _, time_till_open = el.text.split("\n")
+            coord = el.find_element(By.CLASS_NAME, "search-snippet-view__body")
+            long, lat = map(lambda x: float(x), coord.get_attribute("data-coordinates").split(","))
+            #/html/body/div[1]/div[2]/div[8]/div[2]/div[1]/div[1]/div[1]/div/div[1]/div/div/ul/li[1]/div
+            # print(type(name1), type(address))
+            # print(name1, address)
+            #
+            print(lat,long)
+            rating = float(rating.replace(",", "."))
+            item = MapItem(
+                    name=name1,
+                    type=name2,
+                    address=address,
+                    lat=lat,
+                    long=long
                 )
-                _data = [name1, name2, _type, address, rating, rating_count, time_till_open]
-                data[address] = _data
-                writer.writerow(_data)
-            else:
-                print(el.text.split("\n"))
-        # scroll
-        element = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[8]/div[2]/div[1]/div[1]/div[1]/div/div[1]/div/div/div[2]/div[2]")
-        driver.implicitly_wait(5)
-        ActionChains(driver).move_to_element(element).click().perform()
-        ActionChains(driver).move_to_element(element).send_keys(Keys.PAGE_DOWN).perform()
 
-    with open("parcer/test_data.json", "w+", encoding="utf-8") as f:
-        f.write(Points(points=arr).json().encode().decode())
+            response = requests.post("http://0.0.0.0/places/new",
+                                     json={
+                                          "name": name1,
+                                          "long": long,
+                                          "lat": lat,
+                                          "type": name2,
+                                          "rating": rating
+                                        }
+                                     )
+            if response.status_code == 200:
+                pass
+            else:
+                print(response.text)
+                exit(0)
+            arr.append(
+                MapItem(
+                    name=name1,
+                    type=name2,
+                    address=address,
+                    lat=lat,
+                    long=long
+                )
+            )
+            _data = [name1, name2, _type, address, rating, rating_count, time_till_open]
+            data[address] = _data
+            # writer.writerow(_data)
+        else:
+            print(el.text.split("\n"))
+    # scroll
+    element = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[8]/div[2]/div[1]/div[1]/div[1]/div/div[1]/div/div/div[2]/div[2]")
+    driver.implicitly_wait(5)
+    ActionChains(driver).move_to_element(element).click().perform()
+    ActionChains(driver).move_to_element(element).send_keys(Keys.PAGE_DOWN).perform()
+
+with open("parcer/test_data.json", "w+", encoding="utf-8") as f:
+    f.write(Points(points=arr).json().encode().decode())
 
 driver.close()
 

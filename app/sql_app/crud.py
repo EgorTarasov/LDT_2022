@@ -65,7 +65,6 @@ def create_map_item(db: Session, item: schemas.MapItemCreate):
             rating=item.rating
         )
     db.add(db_item)
-    db.commit()
     db.flush()
     return schemas.MapItem.from_orm(db_item)
 
