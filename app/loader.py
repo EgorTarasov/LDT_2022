@@ -1,7 +1,7 @@
 import os
 
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
 DATABASE_URL = os.getenv("DATABASE_URL")
-POSTGRES_PROD_DB_NAME = os.getenv("POSTGRES_PROD_DB_NAME")
-POSTGRES_DEV_DB_NAME = os.getenv("POSTGRES_DEV_DB_NAME")
-POSTGRES_USER = os.getenv("POSTGRES_USER")
-POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")

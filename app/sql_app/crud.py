@@ -53,4 +53,21 @@ def get_token(db: Session, username: str) -> models.Token:
 
 # MapItems
 def get_map_items(db: Session, offset: int = 0, limit: int = 100):
-    return db.query(models.MapItem).offset(offset).limit(limit).all()[offset:(offset+limit)]
+    return db.query(models.MapItem).offset(offset).limit(limit).all()[offset:(offset + limit)]
+
+
+def create_map_item(db: Session, item: schemas.MapItemCreate):
+    db_item = models.MapItem(
+            name=item.name,
+            long=item.long,
+            lat=item.lat,
+            type=item.type,
+            rating=item.rating
+        )
+    db.add(db_item)
+    db.commit()
+    db.flush()
+    return schemas.MapItem.from_orm(db_item)
+
+
+

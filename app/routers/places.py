@@ -27,3 +27,11 @@ def get_points(offset: int | None = Query(ge=0), count: int | None = Query(ge=1)
         result.append(schemas.MapItem.from_orm(i))
     return result
 
+
+@router.post('/new')
+def save_point(item: schemas.MapItemCreate):
+    db = next(get_db())
+    response = crud.create_map_item(db, item)
+    return response
+
+
