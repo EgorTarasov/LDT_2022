@@ -20,7 +20,8 @@ venv
 docs.zip
 archive.zip
 DS_STORE
-
+*.sqlite
+.env
 # vim temporary files
 *~
 .*.sw?

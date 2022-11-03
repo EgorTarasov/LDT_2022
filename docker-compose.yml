@@ -1,6 +1,17 @@
 version: "3.9"
 services:
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_MULTIPLE_DATABASES=db1,db2: ${PROD_DB_NAME}, ${DEV_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
   backend:
+    depends_on:
+      - "postgres"
     build: .
     ports:
       - "80:80"
+
