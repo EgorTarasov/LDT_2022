@@ -35,7 +35,7 @@ def save_point(item: schemas.MapItemCreate):
     return response
 
 
-@router.get('/{item_id}')
+@router.get('/place/{item_id}')
 def get_point_by_id(item_id: int):
     db = next(get_db())
     map_item = crud.get_map_item_by_id(db, item_id)
@@ -48,3 +48,19 @@ def get_point_by_id(item_id: int):
     )
 
 
+@router.get("/radius")
+def get_point_in_radius(lat: float, long: float, r: int):#-> list[schemas.MapItemResponse]:
+    db = next(get_db())
+    map_items = crud.get_map_items_in_radius(db, center_lat=lat, center_long=long, radius=r)
+    response = []
+    for item in map_items:
+        response.append(
+            schemas.MapItemResponse(
+                id=item.id,
+                name=item.name,
+                desc="desc",
+                long=item.long,
+                lat=item.lat
+            )
+        )
+    return response
