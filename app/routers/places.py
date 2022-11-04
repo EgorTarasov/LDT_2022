@@ -35,3 +35,16 @@ def save_point(item: schemas.MapItemCreate):
     return response
 
 
+@router.get('/{item_id}')
+def get_point_by_id(item_id: int):
+    db = next(get_db())
+    map_item = crud.get_map_item_by_id(db, item_id)
+    return schemas.MapItemResponse(
+        id=map_item.id,
+        name=map_item.name,
+        desc="desc",
+        long=map_item.long,
+        lat=map_item.lat
+    )
+
+

@@ -2,9 +2,14 @@ import time
 import csv
 import json
 import os
-# os.chdir("..")
-# print(os.listdir())
-# exit(0)
+# Найти центры районов
+# пройтись по всем районам с запросами:
+# 1) постаматы яндекс маркет ~768
+# 2) Цайняо, постаматы ~ 1198
+# 3) OZON box ~600
+# 4) wildberries пункт выдачи ~ 2400
+# 5)
+# "add - business - view"
 
 
 
@@ -48,79 +53,95 @@ time.sleep(10)
 inp = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[2]/header/div/div/div/form/div[2]/div/span/span/input")
 inp.click()
 inp.send_keys("постоматы яндекс маркет")
-time.sleep(2)
+time.sleep(10)
 
 find_btn = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[2]/header/div/div/div/form/div[3]/button")
 find_btn.click()
-time.sleep(2)
+time.sleep(10)
 
 
 data: dict[str: list[str]] = {}
 arr = []
+data_arr = []
+data_dict = {}
 # with open('parcer/postv3.csv', 'w+', encoding="utf-8") as csvfile:
 #     fieldnames = ['name1', 'name2', "lat", "long", "type", "address", "rating", "rating_count", "time_open"]
 #     dwriter = csv.DictWriter(csvfile, fieldnames=fieldnames)
 #     writer = csv.writer(csvfile)
-while len(arr) < 50:
+while len(arr) < 500:
     results = driver.find_elements(By.CLASS_NAME, "search-snippet-view")
-
-    for el in results:
-        if len(el.text.split("\n")) == 9:
-
-            name1, name2, _type, address, _, rating, rating_count, _, time_till_open = el.text.split("\n")
-            coord = el.find_element(By.CLASS_NAME, "search-snippet-view__body")
-            long, lat = map(lambda x: float(x), coord.get_attribute("data-coordinates").split(","))
-            #/html/body/div[1]/div[2]/div[8]/div[2]/div[1]/div[1]/div[1]/div/div[1]/div/div/ul/li[1]/div
-            # print(type(name1), type(address))
-            # print(name1, address)
+    try:
+        end = driver.find_element(By.CLASS_NAME, "add-business-view")
+        break
+    except NoSuchElementException as e:
+        for el in results:
+            address = el.text.split("\n")[2]
+            data_dict[address] = el.text.split("\n")
+            data_arr.append(el.text.split("\n"))
+            # print(type(el.text.split("\n")[0]))
+            # exit(0)
+            # if len(el.text.split("\n")) == 9:
+            #     name1, name2, _type, address, _, rating, rating_count, _, time_till_open = el.text.split("\n")
+            #     coord = el.find_element(By.CLASS_NAME, "search-snippet-view__body")
+            #     long, lat = map(lambda x: float(x), coord.get_attribute("data-coordinates").split(","))
+            #     #/html/body/div[1]/div[2]/div[8]/div[2]/div[1]/div[1]/div[1]/div/div[1]/div/div/ul/li[1]/div
+            #     # print(type(name1), type(address))
+            #     # print(name1, address)
+            #     #
+            #     if address in data_arr:
+            #         break
+            #     data_arr.append(address)
+            #     print(lat,long)
+            #     rating = float(rating.replace(",", "."))
+            #     item = MapItem(
+            #             name=name1,
+            #             type=name2,
+            #             address=address,
+            #             lat=lat,
+            #             long=long
+            #         )
             #
-            print(lat,long)
-            rating = float(rating.replace(",", "."))
-            item = MapItem(
-                    name=name1,
-                    type=name2,
-                    address=address,
-                    lat=lat,
-                    long=long
-                )
+            #     response = requests.post("http://92.243.176.50/places/new",
+            #                              json={
+            #                                   "name": name1,
+            #                                   "long": long,
+            #                                   "lat": lat,
+            #                                   "type": name2,
+            #                                   "rating": rating
+            #                                 }
+            #                              )
+            #     if response.status_code == 200:
+            #         pass
+            #     else:
+            #         print(response.text)
+            #         exit(0)
+            #     arr.append(
+            #         MapItem(
+            #             name=name1,
+            #             type=name2,
+            #             address=address,
+            #             lat=lat,
+            #             long=long
+            #         )
+            #     )
+            #     _data = [name1, name2, _type, address, rating, rating_count, time_till_open]
+            #     data[address] = _data
+            #     # writer.writerow(_data)
+            # else:
+            #     print(el.text.split("\n"))
+        # scroll
+        print(len(data_arr))
+        element = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[8]/div[2]/div[1]/div[1]/div[1]/div/div[1]/div/div/div[2]/div[2]")
+        driver.implicitly_wait(5)
+        ActionChains(driver).move_to_element(element).click().perform()
+        ActionChains(driver).move_to_element(element).send_keys(Keys.PAGE_DOWN).perform()
 
-            response = requests.post("http://0.0.0.0/places/new",
-                                     json={
-                                          "name": name1,
-                                          "long": long,
-                                          "lat": lat,
-                                          "type": name2,
-                                          "rating": rating
-                                        }
-                                     )
-            if response.status_code == 200:
-                pass
-            else:
-                print(response.text)
-                exit(0)
-            arr.append(
-                MapItem(
-                    name=name1,
-                    type=name2,
-                    address=address,
-                    lat=lat,
-                    long=long
-                )
-            )
-            _data = [name1, name2, _type, address, rating, rating_count, time_till_open]
-            data[address] = _data
-            # writer.writerow(_data)
-        else:
-            print(el.text.split("\n"))
-    # scroll
-    element = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[8]/div[2]/div[1]/div[1]/div[1]/div/div[1]/div/div/div[2]/div[2]")
-    driver.implicitly_wait(5)
-    ActionChains(driver).move_to_element(element).click().perform()
-    ActionChains(driver).move_to_element(element).send_keys(Keys.PAGE_DOWN).perform()
-
-with open("parcer/test_data.json", "w+", encoding="utf-8") as f:
-    f.write(Points(points=arr).json().encode().decode())
-
+with open("datav2.txt", "w+", encoding="utf-8") as file:
+    for i in data_arr:
+        file.write(";".join(i) + "\n")
+with open("datav3.txt", "w+", encoding="utf-8") as file:
+    for k in data_dict:
+        file.write(";".join(i) + "\n")
 driver.close()
 
 

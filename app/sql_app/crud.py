@@ -52,8 +52,17 @@ def get_token(db: Session, username: str) -> models.Token:
 
 
 # MapItems
-def get_map_items(db: Session, offset: int = 0, limit: int = 100):
+def get_map_items(db: Session, offset: int = 0, limit: int = 100) -> list[models.MapItem]:
     return db.query(models.MapItem).offset(offset).limit(limit).all()[offset:(offset + limit)]
+
+
+def get_map_items_in_radius(db: Session, center_lat: float, center_long: float, radius: int):
+
+    return None
+
+
+def get_map_item_by_id(db: Session, item_id: int) -> models.MapItem:
+    return db.query(models.MapItem).filter(models.MapItem.id == item_id).one_or_none()
 
 
 def create_map_item(db: Session, item: schemas.MapItemCreate):

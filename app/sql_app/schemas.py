@@ -14,6 +14,14 @@ class MapItemCreate(MapItemBase):
     pass
 
 
+class MapItemResponse(BaseModel):
+    id: int
+    name: constr(min_length=3, max_length=256)
+    desc: constr(max_length=256)
+    long: confloat(ge=-180.0, le=180)
+    lat: confloat(ge=-90, le=90)
+
+
 class MapItem(MapItemBase):
     id: int
 
