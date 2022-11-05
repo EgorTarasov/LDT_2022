@@ -26,7 +26,7 @@ class MapItemResponse(BaseModel):
 
 class MapItem(MapItemBase):
     id: int
-
+    abbrev_ao: str
     class Config:
         orm_mode = True
 

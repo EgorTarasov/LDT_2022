@@ -42,6 +42,7 @@ class MapItem(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
+    abbrev_ao = Column(String, index=True)
     long = Column(Float, index=True)
     lat = Column(Float, index=True)
     type = Column(String, index=True)

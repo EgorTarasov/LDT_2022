@@ -2,10 +2,14 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-from . import models, schemas
-from ..dependencies import hash_password, generate_api_token
+#FIXME: apt install geos
+# from shapely.geometry import Point
+# from shapely.geometry.polygon import Polygon
 
 import math
+
+from . import models, schemas
+from ..dependencies import hash_password, generate_api_token
 
 
 # User
@@ -81,17 +85,17 @@ def get_map_items_in_radius(db: Session, center_lat: float, center_long: float, 
     center_long, center_lat = math.fabs(center_long), math.fabs(center_lat)
     return db.query(models.MapItem).where(
         (c1 * func.asin(
-                    func.sqrt(
-                        func.power(
-                            func.sin((models.MapItem.lat - center_lat) * k1),
-                            2
-                        ) + func.cos(models.MapItem.lat * k2) * func.cos(center_lat * k2) *
-                        func.power(
-                            func.sin((models.MapItem.long - center_long) * k1),
-                            2
-                        )
-                    )
-                    )
+            func.sqrt(
+                func.power(
+                    func.sin((models.MapItem.lat - center_lat) * k1),
+                    2
+                ) + func.cos(models.MapItem.lat * k2) * func.cos(center_lat * k2) *
+                func.power(
+                    func.sin((models.MapItem.long - center_long) * k1),
+                    2
+                )
+            )
+        )
          ) < radius
     ).all()
 
@@ -101,8 +105,24 @@ def get_map_item_by_id(db: Session, item_id: int) -> models.MapItem:
 
 
 def create_map_item(db: Session, item: schemas.MapItemCreate) -> schemas.MapItem:
+    # db_regions = db.query(models.Region).all()
+    # regions_shapes = []
+    # abbrev_ao = False
+    # for region in db_regions:
+    #     coordinates = []
+    #     for polygon in region.geometry["coordinates"]:
+    #         coordinates.append(polygon)
+    #     polygons = [Polygon(points) for points in coordinates]
+    #     point = Point(item.long, item.lat)
+    #     for p in polygons:
+    #         if p.contains(point):
+    #             abbrev_ao = region.abbrev_ao
+    #     if abbrev_ao:
+    #         break
+
     db_item = models.MapItem(
         name=item.name,
+        abbrev_ao=abbrev_ao,
         long=item.long,
         lat=item.lat,
         type=item.type,
@@ -114,7 +134,7 @@ def create_map_item(db: Session, item: schemas.MapItemCreate) -> schemas.MapItem
 
 
 # Regions
-def create_region(db: Session, item: schemas.RegionBase) ->schemas.Region:
+def create_region(db: Session, item: schemas.RegionBase) -> schemas.Region:
     db_item = models.Region(**item.dict())
     db.add(db_item)
     db.flush()
@@ -123,3 +143,8 @@ def create_region(db: Session, item: schemas.RegionBase) ->schemas.Region:
 
 def get_region_all(db: Session) -> list[models.Region]:
     return db.query(models.Region).all()
+
+
+def get_points_in_region(db: Session) -> list[models.MapItem] | None:
+
+    return None
