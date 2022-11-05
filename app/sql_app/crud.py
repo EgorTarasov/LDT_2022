@@ -111,3 +111,15 @@ def create_map_item(db: Session, item: schemas.MapItemCreate) -> schemas.MapItem
     db.add(db_item)
     db.flush()
     return schemas.MapItem.from_orm(db_item)
+
+
+# Regions
+def create_region(db: Session, item: schemas.RegionBase) ->schemas.Region:
+    db_item = models.Region(**item.dict())
+    db.add(db_item)
+    db.flush()
+    return db_item
+
+
+def get_region_all(db: Session) -> list[models.Region]:
+    return db.query(models.Region).all()

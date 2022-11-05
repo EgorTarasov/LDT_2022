@@ -1,4 +1,6 @@
-from pydantic import BaseModel, confloat, constr
+from typing import Any
+
+from pydantic import BaseModel, confloat, constr, Json
 from typing import Optional
 
 
@@ -41,6 +43,25 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_active: bool
+
+    class Config:
+        orm_mode = True
+
+
+class Geometry(BaseModel):
+    type: str
+    coordinates: list[list[list[float, float]]]
+
+
+class RegionBase(BaseModel):
+    name: str
+    name_ao: str
+    okato: int
+    abbrev_ao: str
+    geometry: Geometry
+
+class Region(RegionBase):
+    id: int
 
     class Config:
         orm_mode = True
