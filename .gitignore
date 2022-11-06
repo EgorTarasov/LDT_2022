@@ -27,7 +27,7 @@ arm_venv
 # vim temporary files
 *~
 .*.sw?
-*.json
+
 *.txt
 *.ipynb
 write_regions.py
