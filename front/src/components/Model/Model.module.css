@@ -1,0 +1,14 @@
+.modelShow{
+  box-sizing: border-box;
+  z-index: 4;
+  position: absolute;
+}
+.text{
+  box-sizing: border-box;
+  z-index: 4;
+  font-style: 40px;
+  text-align: center;
+  width: 100px;
+  height: 30px;
+  position: absolute;
+}

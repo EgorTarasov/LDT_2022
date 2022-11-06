@@ -1,0 +1,35 @@
+.header{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 4;
+  box-sizing: border-box;
+  padding-top: 10px;
+  padding-left: 40px;
+}
+
+.select{
+  margin: auto;
+  margin-top: 0;
+}
+.range{
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.rangeValues{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .header{
+    flex-direction: column;
+    margin-top: 20%;
+  }
+}

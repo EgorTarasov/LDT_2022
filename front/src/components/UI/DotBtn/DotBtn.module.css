@@ -1,0 +1,10 @@
+.DotBtn{
+  background: url("dot.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 28px;
+  height: 28px;
+  align-self: center;
+  border: none;
+}

@@ -1,0 +1,13 @@
+.heatmap{
+  box-sizing: border-box;
+  z-index: 4;
+  width: 42px;
+  height: 42px;
+  background: url("heatmap.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.2));
+    border-radius: 5px;
+}

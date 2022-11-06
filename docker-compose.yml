@@ -21,4 +21,12 @@ services:
       dockerfile: app/dockerfile
     ports:
       - "80:80"
-
+  frontend:
+    depends_on:
+      - "backend"
+      - "db"
+    build:
+      context: .
+      dockerfile: front/dockerfile
+    ports:
+      - "3000:3000"
