@@ -26,7 +26,7 @@ function useGetParams() {
   };
   useEffect(() => {
     axios
-      .get("/places/radius", {
+      .get("http://92.243.176.50/places/radius", {
         params: {
           lat: 37.62268066406251,
           long: 55.75068339731634,
@@ -43,7 +43,7 @@ function useGetParams() {
   }, []);
   useEffect(() => {
     axios
-      .get("/places/radius", {
+      .get("http://92.243.176.50/places/radius", {
         params: {
           lat: dot[1],
           long: dot[0],
@@ -61,7 +61,7 @@ function useGetParams() {
   useEffect(() => {
     selectModel === 4 &&
       axios
-        .get("/places/radius", {
+        .get("http://92.243.176.50/places/radius", {
           params: {
             lat: dot[1],
             long: dot[0],
@@ -78,7 +78,7 @@ function useGetParams() {
   }, [dot]);
   useEffect(() => {
     axios
-      .get("/places/all", {
+      .get("http://92.243.176.50/places/all", {
         params: {
           offset: 0,
           count: 1000,
@@ -94,7 +94,7 @@ function useGetParams() {
   }, [date]);
   useEffect(() => {
     axios
-      .get("/places/all", {
+      .get("http://92.243.176.50/places/all", {
         params: {
           offset: 0,
           count: 10000,
