@@ -56,6 +56,7 @@ class RegionBase(BaseModel):
     abbrev_ao: str
     geometry: Geometry
 
+
 class Region(RegionBase):
     id: int
 
