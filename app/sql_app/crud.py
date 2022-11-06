@@ -63,7 +63,7 @@ def get_token(db: Session, username: str) -> models.Token:
 
 # MapItems
 def get_map_items(db: Session, offset: int = 0, limit: int = 100) -> list[models.MapItem]:
-    return db.query(models.MapItem).offset(offset).all()[:limit]
+    return db.query(models.MapItem).offset(offset).limit(limit).all()
 
 
 def get_map_items_csv(db: Session):

@@ -22,7 +22,7 @@ router = APIRouter(
 def get_points(offset: int | None = Query(ge=0), count: int | None = Query(ge=1)):
     db = next(get_db())
     # FIXME
-    items = crud.get_map_items(db, offset, offset+count)
+    items = crud.get_map_items(db, offset, count)
     result = []
     for i in items:
         result.append(schemas.MapItemResponse.from_orm(i))
