@@ -30,10 +30,8 @@ arm_venv
 *.json
 *.txt
 *.ipynb
-raw_to_schema.py
 write_regions.py
 parcerv0.py
-parcerv1.py
 parcerv0.py
 test.html
 *.http
