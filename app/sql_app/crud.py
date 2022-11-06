@@ -1,4 +1,7 @@
 # CRUD - Create Read Update Delete
+import csv
+import os
+
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
@@ -61,6 +64,19 @@ def get_token(db: Session, username: str) -> models.Token:
 # MapItems
 def get_map_items(db: Session, offset: int = 0, limit: int = 100) -> list[models.MapItem]:
     return db.query(models.MapItem).offset(offset).limit(limit).all()[offset:(offset + limit)]
+
+
+def get_map_items_csv(db: Session):
+    items = db.query(models.MapItem).all()
+    print(os.getcwd())
+    print(os.listdir())
+    with open("files/data.csv", "w+", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(["id", "name", "type", "rating", "abbrev_ao", "long", "lat", "desc"])
+        for i in items:
+            writer.writerow([i.id, i.name, i.type, i.rating, i.abbrev_ao, i.long, i.lat, i.desc])
+
+    return "files/data.csv"
 
 
 def get_map_items_in_radius(db: Session, center_lat: float, center_long: float, radius: int) -> list[models.MapItem]:

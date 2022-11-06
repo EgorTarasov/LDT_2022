@@ -35,4 +35,5 @@ watchfiles==0.18.0
 webdriver-manager==3.8.4
 websockets==10.4
 wsproto==1.2.0
-psycopg2
+psycopg2==2.9.5
+aiofiles==22.1.0

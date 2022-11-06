@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Query
+from fastapi.responses import FileResponse
 
 from ..dependencies import get_db
 from ..sql_app import crud, schemas
@@ -28,6 +29,14 @@ def get_points(offset: int | None = Query(ge=0), count: int | None = Query(ge=1)
     return result
 
 
+@router.get("/csv")
+def get_points_csv():
+    db = next(get_db())
+    file = crud.get_map_items_csv(db)
+
+    return FileResponse(file, media_type="text/csv")
+
+
 @router.post('/new')
 def save_point(item: schemas.MapItemCreate):
     db = next(get_db())
@@ -50,3 +59,4 @@ def get_point_in_radius(lat: float, long: float, r: int):#-> list[schemas.MapIte
     for item in map_items:
         response.append(schemas.MapItemResponse.from_orm(item))
     return response
+
