@@ -10,6 +10,7 @@ site
 .coverage
 coverage.xml
 .netlify
+*.http
 test.db
 log.txt
 Pipfile.lock

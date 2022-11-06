@@ -62,6 +62,16 @@ class Region(Base):
     abbrev_ao = Column(String)
     geometry = Column(JSON) 
 
+
+class PredictionItem(Base):
+    __tablename__ = "prediction"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    radius = Column(Integer)
+    long = Column(Float)
+    lat = Column(Float)
+
 # TODO: сохранение сессии
 # class MapSession(Base):
 #     __tablename__ = "map_sessions"

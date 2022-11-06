@@ -5,7 +5,7 @@ from typing import Optional
 
 
 class MapItemBase(BaseModel):
-    name: constr(min_length=3, max_length=256)
+    name: constr(max_length=256)
     abbrev_ao: str
     address: str
     rating: Optional[confloat(ge=0.0, le=5.0)]
