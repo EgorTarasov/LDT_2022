@@ -24,7 +24,7 @@ def get_points(offset: int | None = Query(ge=0), count: int | None = Query(ge=1)
     items = crud.get_map_items(db, offset, offset+count)
     result = []
     for i in items:
-        result.append(schemas.MapItem.from_orm(i))
+        result.append(schemas.MapItemResponse.from_orm(i))
     return result
 
 
@@ -39,13 +39,7 @@ def save_point(item: schemas.MapItemCreate):
 def get_point_by_id(item_id: int):
     db = next(get_db())
     map_item = crud.get_map_item_by_id(db, item_id)
-    return schemas.MapItemResponse(
-        id=map_item.id,
-        name=map_item.name,
-        desc="desc",
-        long=map_item.long,
-        lat=map_item.lat
-    )
+    return schemas.MapItemResponse.from_orm(map_item)
 
 
 @router.get("/radius")
@@ -54,13 +48,5 @@ def get_point_in_radius(lat: float, long: float, r: int):#-> list[schemas.MapIte
     map_items = crud.get_map_items_in_radius(db, center_lat=lat, center_long=long, radius=r)
     response = []
     for item in map_items:
-        response.append(
-            schemas.MapItemResponse(
-                id=item.id,
-                name=item.name,
-                desc="desc",
-                long=item.long,
-                lat=item.lat
-            )
-        )
+        response.append(schemas.MapItemResponse.from_orm(item))
     return response

@@ -41,8 +41,11 @@ class MapItem(Base):
     __tablename__ = "map_items"
 
     id = Column(Integer, primary_key=True, index=True)
+    
     name = Column(String, index=True)
     abbrev_ao = Column(String, index=True)
+    address = Column(String, index=True)
+    desc = Column(String)
     long = Column(Float, index=True)
     lat = Column(Float, index=True)
     type = Column(String, index=True)

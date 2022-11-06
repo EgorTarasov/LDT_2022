@@ -104,7 +104,7 @@ def get_map_item_by_id(db: Session, item_id: int) -> models.MapItem:
     return db.query(models.MapItem).filter(models.MapItem.id == item_id).one_or_none()
 
 
-def create_map_item(db: Session, item: schemas.MapItemCreate) -> schemas.MapItem:
+def create_map_item(db: Session, item: schemas.MapItemCreate) -> schemas.MapItemResponse:
     # db_regions = db.query(models.Region).all()
     # regions_shapes = []
     # abbrev_ao = False
@@ -122,7 +122,9 @@ def create_map_item(db: Session, item: schemas.MapItemCreate) -> schemas.MapItem
 
     db_item = models.MapItem(
         name=item.name,
-        abbrev_ao=abbrev_ao,
+        abbrev_ao=item.abbrev_ao,
+        address=item.address,
+        desc=item.desc,
         long=item.long,
         lat=item.lat,
         type=item.type,
@@ -130,7 +132,7 @@ def create_map_item(db: Session, item: schemas.MapItemCreate) -> schemas.MapItem
     )
     db.add(db_item)
     db.flush()
-    return schemas.MapItem.from_orm(db_item)
+    return schemas.MapItemResponse.from_orm(db_item)
 
 
 # Regions

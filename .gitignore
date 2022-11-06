@@ -26,3 +26,18 @@ arm_venv
 # vim temporary files
 *~
 .*.sw?
+*.json
+*.txt
+*.ipynb
+raw_to_schema.py
+write_regions.py
+parcerv0.py
+parcerv1.py
+parcerv0.py
+test.html
+*.http
+.ipynb_checkpoints
+.vscode
+.idea
+data
+parcer
