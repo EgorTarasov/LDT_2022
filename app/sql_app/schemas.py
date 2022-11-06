@@ -46,7 +46,7 @@ class User(UserBase):
 
 class Geometry(BaseModel):
     type: str
-    coordinates: list[list[list[float, float]]]
+    coordinates: list
 
 
 class RegionBase(BaseModel):

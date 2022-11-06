@@ -3,9 +3,10 @@ from fastapi.responses import FileResponse
 
 from ..dependencies import get_db
 from ..sql_app import crud, schemas
+
 # from ..dependencies import something
 
-# TODO: add dependencies
+
 router = APIRouter(
     prefix="/places",
     tags=["places"],
@@ -18,10 +19,18 @@ router = APIRouter(
 )
 
 
-@router.get('/all')
+@router.get('/all', summary="Возвращает точки объектов")
 def get_points(offset: int | None = Query(ge=0), count: int | None = Query(ge=1)):
+    """
+    Возвращает точки объектов для отображения на интерактивной карте
+     - **offset** Смещение необходимое для выбора определенного подмножества объектов
+     - **count** Количество объектов, которое необходимо получить
+
+    :param offset:
+    :param count:
+    :return:
+    """
     db = next(get_db())
-    # FIXME
     items = crud.get_map_items(db, offset, count)
     result = []
     for i in items:
@@ -52,11 +61,10 @@ def get_point_by_id(item_id: int):
 
 
 @router.get("/radius")
-def get_point_in_radius(lat: float, long: float, r: int):#-> list[schemas.MapItemResponse]:
+def get_point_in_radius(lat: float, long: float, r: int):  # -> list[schemas.MapItemResponse]:
     db = next(get_db())
     map_items = crud.get_map_items_in_radius(db, center_lat=lat, center_long=long, radius=r)
     response = []
     for item in map_items:
         response.append(schemas.MapItemResponse.from_orm(item))
     return response
-
