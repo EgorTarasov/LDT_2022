@@ -80,14 +80,7 @@ def get_map_items_csv(db: Session):
 
 
 def get_map_items_in_radius(db: Session, center_lat: float, center_long: float, radius: int) -> list[models.MapItem]:
-    # https://rodionoff.space/all/points-in-radius/
-    # -- квадрат
-    # (LAT < 55.769367216557 AND LAT > 55.733380783443)
-    # AND
-    # (LON < 37.648729735553 AND LON > 37.584786264447)
-    # AND
-    # -- Пифагор
-    # POW((LAT - 55.751374) * 111153, 2) + POW((LON - 37.616758) * 62555.252801631, 2) < 4000000
+
     k1 = math.pi / 180 / 2
     k2 = math.pi / 180
     c1 = 6371000 * 2
